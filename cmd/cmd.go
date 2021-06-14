@@ -71,33 +71,3 @@ func main() {
 		log.Fatal("Server has been crashed...")
 	}
 }
-
-//
-//client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://kvarc:pilubadima@clusterkvarc.bdz6v.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"))
-//if err != nil {
-//logrus.Fatal("1",err)
-//}
-//ctx, _ := context.WithTimeout(context.Background(), 10 * time.Second)
-//err = client.Connect(ctx)
-//if err != nil {
-//logrus.Fatal("2",err)
-//}
-//defer client.Disconnect(ctx)
-//err = client.Ping(ctx, readpref.Primary())
-//if err != nil {
-//logrus.Fatal("3",err)
-//}
-//if err != nil {
-//logrus.Fatal("4",err)
-//}
-//db := client.Database("myFirstDatabase")
-//col := db.Collection("books")
-//cursor, err := col.Find(ctx, bson.M{})
-//if err != nil {
-//logrus.Fatal("5",err)
-//}
-//var episodes []bson.M
-//if err = cursor.All(ctx, &episodes); err != nil {
-//logrus.Fatal("6",err)
-//}
-//fmt.Println(episodes)
