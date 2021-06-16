@@ -1,13 +1,13 @@
-version: '3.3'
+version: '3.4'
 
 services:
   db-book:
     image: ${SERVER_IMAGE}
     environment:
-     - DB_USERS_USER=${DB_USER}
-     - DB_USERS_PASSWORD=${DB_PASSWORD}
-     - DB_USERS_HOST=${DB_HOST}
-     - DB_USER_PORT=${DB_PORT}
+      - DB_USERS_USER=${DB_USER}
+      - DB_USERS_PASSWORD=${DB_PASSWORD}
+      - DB_USERS_HOST=${DB_HOST}
+      - DB_USER_PORT=${DB_PORT}
     ports:
       - 8081:8081
     container_name: ${SERVER_CONTAINER_NAME}
@@ -18,10 +18,13 @@ services:
   mongo:
     container_name: ${DB_MONGO}
     image: ${MONGO_IMAGE}
-    ports:
-      - 27018:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
     networks:
       - ${NETWORK_NAME}
+    ports:
+    - 27017:27017
 
 networks:
   book-network:
