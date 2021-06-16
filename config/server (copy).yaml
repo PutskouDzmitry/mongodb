@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mongodb
+  labels:
+    app: todo-mongodb
+spec:
+  volumes:
+  - name: todo-mongo-vol
+    persistentVolumeClaim:
+      claimName: todo-pvc
+  containers:
+  - image: mongo
+    name: container1
+    ports:
+    - containerPort: 27017
+    volumeMounts:
+    - name: todo-mongo-vol
+      mountPath: /data/db
+  
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: todo-mongodb
+  name: todo-mongo-service
+spec:
+  ports:
+    - port: 27017
+      targetPort: 27012
+  selector:
+    app: todo-mongodb    
+   
