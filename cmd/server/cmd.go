@@ -12,10 +12,8 @@ import (
 	"net/http"
 	"os"
 	"time"
-
 	"github.com/PutskouDzmitry/be-sd/pkg/api"
 	"github.com/PutskouDzmitry/be-sd/pkg/data"
-
 	"github.com/gorilla/mux"
 )
 
