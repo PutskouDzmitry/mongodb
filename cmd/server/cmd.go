@@ -12,10 +12,8 @@ import (
 	"net/http"
 	"os"
 	"time"
-
 	"github.com/PutskouDzmitry/be-sd/pkg/api"
 	"github.com/PutskouDzmitry/be-sd/pkg/data"
-
 	"github.com/cenkalti/backoff"
 	"github.com/gorilla/mux"
 )
@@ -76,7 +74,6 @@ func main() {
 		} else {
 			break
 		}
-
 	}
 	db := client.Database("book")
 	collection := db.Collection("book")
