@@ -9,7 +9,7 @@ services:
       - DB_USERS_HOST=${DB_HOST}
       - DB_USER_PORT=${DB_PORT}
     ports:
-      - ${SERVER_OUT_PORT}:${SERVER_INNER_PORT}
+      - 8081:8081
     container_name: ${SERVER_CONTAINER_NAME}
     networks:
       - ${NETWORK_NAME}
@@ -19,12 +19,12 @@ services:
     container_name: ${DB_MONGO}
     image: ${MONGO_IMAGE}
     environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
     networks:
       - ${NETWORK_NAME}
     ports:
-      - ${MONGO_OUT_PORT}:${MONGO_INNER_PORT}
+    - 27017:27017
 
 networks:
   book-network:
