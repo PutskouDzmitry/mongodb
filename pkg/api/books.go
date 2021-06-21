@@ -9,7 +9,7 @@ import (
 
 	//"strconv"
 
-	"github.com/PutskouDzmitry/golang-training-Library/pkg/data"
+	"github.com/PutskouDzmitry/be-sd/pkg/data"
 
 	"github.com/gorilla/mux"
 )

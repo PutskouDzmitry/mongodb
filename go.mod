@@ -1,9 +1,10 @@
-module github.com/PutskouDzmitry/golang-training-Library
+module github.com/PutskouDzmitry/be-sd
 
 go 1.16
 
 require (
 	github.com/DATA-DOG/go-sqlmock v1.5.0
+	github.com/PutskouDzmitry/golang-training-Library v0.0.0-20210501080056-f9047aa6e4ce
 	github.com/gorilla/mux v1.8.0
 	github.com/sirupsen/logrus v1.8.1
 	github.com/stretchr/testify v1.7.0
