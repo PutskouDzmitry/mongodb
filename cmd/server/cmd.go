@@ -12,8 +12,10 @@ import (
 	"net/http"
 	"os"
 	"time"
+
 	"github.com/PutskouDzmitry/be-sd/pkg/api"
 	"github.com/PutskouDzmitry/be-sd/pkg/data"
+
 	"github.com/cenkalti/backoff"
 	"github.com/gorilla/mux"
 )
@@ -25,21 +27,19 @@ var (
 	port = os.Getenv("DB_USER_PORT")
 )
 
-func initValues() bool{
-	check := false
+func initValues() {
 	if user == "" {
-		check = true
+		user = "root"
 	}
 	if password == "" {
-		check = true
+		password = "example"
 	}
 	if host == "" {
-		check = true
+		host = "mongo"
 	}
 	if port == "" {
-		check = true
+		port = "27017"
 	}
-	return check
 }
 
 func initClient(user string, password string, host string, port string) string{
@@ -47,13 +47,7 @@ func initClient(user string, password string, host string, port string) string{
 }
 
 func main() {
-	var client *mongo.Client
-	var err error
-	if initValues() {
-		client, err = mongo.NewClient(options.Client().ApplyURI("mongodb://todo-api-mongodb:27017"))
-	} else {
-		client, err = mongo.NewClient(options.Client().ApplyURI(initClient(user, password, host, port)))
-	}
+	client, err := mongo.NewClient(options.Client().ApplyURI(initClient(user, password, host, port)))
 	if err != nil {
 		logrus.Fatal("error with client ", err)
 	}
@@ -74,6 +68,7 @@ func main() {
 		} else {
 			break
 		}
+
 	}
 	db := client.Database("book")
 	collection := db.Collection("book")

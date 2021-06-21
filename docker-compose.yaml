@@ -2,25 +2,30 @@ version: '3.4'
 
 services:
   db-book:
-    image: kvarc/final-test-docker:latest
-    ports:
-      - 8081:8081
-    container_name: db-book
-    networks:
-      - book-network
-    depends_on:
-      - mongo
-  mongo:
-    container_name: mongo
-    image: mongo
+    image: ${SERVER_IMAGE}
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
-    networks:
-      - book-network
+      - DB_USERS_USER=${DB_USER}
+      - DB_USERS_PASSWORD=${DB_PASSWORD}
+      - DB_USERS_HOST=${DB_HOST}
+      - DB_USER_PORT=${DB_PORT}
     ports:
-      - 27018:27017
+      - ${SERVER_OUT_PORT}:${SERVER_INNER_PORT}
+    container_name: ${SERVER_CONTAINER_NAME}
+    networks:
+      - ${NETWORK_NAME}
+    depends_on:
+      - ${DB_MONGO}
+  mongo:
+    container_name: ${DB_MONGO}
+    image: ${MONGO_IMAGE}
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    networks:
+      - ${NETWORK_NAME}
+    ports:
+      - ${MONGO_OUT_PORT}:${MONGO_INNER_PORT}
 
 networks:
   book-network:
-    name: book-network
+    name: ${NETWORK_NAME}
