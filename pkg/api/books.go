@@ -35,6 +35,7 @@ func (a bookAPI) getAllBooks(writer http.ResponseWriter, request *http.Request) 
 			log.Println(err)
 		}
 	}
+	logrus.Info(users)
 	err = json.NewEncoder(writer).Encode(users)
 	if err != nil {
 		log.Println(err)
@@ -55,6 +56,7 @@ func (a bookAPI) getOneBook(writer http.ResponseWriter, request *http.Request) {
 			return
 		}
 	}
+	logrus.Info(user)
 	if user.NameOfBook != "" {
 		err = json.NewEncoder(writer).Encode(user)
 		if err != nil {
@@ -79,6 +81,7 @@ func (a bookAPI) createBook(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 	err = a.data.Add(*book)
+	logrus.Info(book.BookId)
 	if err != nil {
 		log.Println("user hasn't been created")
 		writer.WriteHeader(http.StatusBadRequest)
@@ -97,8 +100,8 @@ func (a bookAPI) updateBook(writer http.ResponseWriter, request *http.Request) {
 		writer.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	logrus.Info("Id ", id, " number ", number)
 	err = a.data.Update(id, number)
+	logrus.Info(id)
 	if err != nil {
 		log.Println("book hasn't been updated")
 		writer.WriteHeader(http.StatusBadRequest)
@@ -110,10 +113,10 @@ func (a bookAPI) updateBook(writer http.ResponseWriter, request *http.Request) {
 func (a bookAPI) deleteBook(writer http.ResponseWriter, request *http.Request) {
 	idRequest := mux.Vars(request)
 	id := idRequest["id"]
-	log.Println(id)
 	err := a.data.Delete(id)
+	logrus.Println(id)
 	if err != nil {
-		log.Println("book hasn't been deleted")
+		log.Println("book hasn't been deleted(")
 		writer.WriteHeader(http.StatusBadRequest)
 		return
 	}

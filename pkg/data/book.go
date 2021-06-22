@@ -64,16 +64,16 @@ func (B BookData) Read(id string) (Book, error) {
 	if err = cur.Decode(&book); err != nil {
 		return book, err
 	}
-	logrus.Debug(book)
 	return book, nil
 }
 
 //Add add data in db
 func (B BookData) Add(book Book) error {
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-	logrus.Info("Start info", book)
-	result, _ := B.collection.InsertOne(ctx, book)
-	logrus.Info("result", result)
+	result, err := B.collection.InsertOne(ctx, book)
+	if err != nil {
+		logrus.Fatal(err)
+	}
 	if result == nil {
 		return fmt.Errorf("Error with add data")
 	}
@@ -106,9 +106,7 @@ func (B BookData) Delete(id string) error {
 	if err != nil {
 		return err
 	}
-	logrus.Info(idObj)
-	res, err := B.collection.DeleteOne(ctx, bson.M{"_id": idObj})
-	logrus.Info(res)
+	_ , err = B.collection.DeleteOne(ctx, bson.M{"_id": idObj})
 	if err != nil {
 		return err
 	}
