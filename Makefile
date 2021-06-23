@@ -14,16 +14,15 @@ fmt: ## automatically formats Go source code
 image: fmt ## build image from Dockerfile ./docker/server/Dockerfile
 	@docker build -t kvarc/itest-app-v1 .
 
-
 .PHONY: up
 up : image ## up docker compose
 	@docker-compose up -d
 
-.PHONY: test
-test: up
-	@go test ./cmd/server/cmd_test.go
+.PHONY: integration
+integration: up
+	@go test --tags=integration ./cmd/server/cmd_test.go
 
 .PHONY: down
-down : test
+down : integration
 	@docker-compose down
 
