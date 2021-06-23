@@ -16,7 +16,6 @@ import (
 	"github.com/PutskouDzmitry/be-sd/pkg/api"
 	"github.com/PutskouDzmitry/be-sd/pkg/data"
 
-	"github.com/cenkalti/backoff"
 	"github.com/gorilla/mux"
 )
 
@@ -47,6 +46,7 @@ func initClient(user string, password string, host string, port string) string{
 }
 
 func main() {
+	initValues()
 	client, err := mongo.NewClient(options.Client().ApplyURI(initClient(user, password, host, port)))
 	if err != nil {
 		logrus.Fatal("error with client ", err)
@@ -56,19 +56,9 @@ func main() {
 	if err != nil {
 		logrus.Fatal("error with connect to db ", err)
 	}
-	ctxFromPing, _ := context.WithTimeout(context.Background(), 1*time.Second)
-	b := config()
-	defer client.Disconnect(ctx)
-	for {
-		timeWait := b.NextBackOff()
-		time.Sleep(timeWait)
-		err = client.Ping(ctxFromPing, readpref.Primary())
-		if err != nil {
-			logrus.Info("We wait connect to db: ", timeWait)
-		} else {
-			break
-		}
-
+	err = client.Ping(ctx, readpref.Primary())
+	if err != nil {
+		logrus.Fatal(err)
 	}
 	db := client.Database("book")
 	collection := db.Collection("book")
@@ -89,9 +79,3 @@ func main() {
 	}
 }
 
-func config() *backoff.ExponentialBackOff {
-	b := backoff.NewExponentialBackOff()
-	b.MaxInterval = 20 * time.Second
-	b.Multiplier = 2
-	return b
-}
