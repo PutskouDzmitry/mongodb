@@ -81,15 +81,19 @@ func (a bookAPI) createBook(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 	err = a.data.Add(*book)
-	logrus.Info(book.BookId)
+	err = json.NewEncoder(writer).Encode(book.BookId)
+	if err != nil {
+		log.Println(err)
+		writer.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 	if err != nil {
 		log.Println("user hasn't been created")
 		writer.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	writer.WriteHeader(http.StatusCreated)
+	//writer.WriteHeader(http.StatusCreated)
 }
-
 func (a bookAPI) updateBook(writer http.ResponseWriter, request *http.Request) {
 	idRequest := mux.Vars(request)
 	id := idRequest["id"]
@@ -101,10 +105,15 @@ func (a bookAPI) updateBook(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 	err = a.data.Update(id, number)
-	logrus.Info(id)
 	if err != nil {
 		log.Println("book hasn't been updated")
 		writer.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	err = json.NewEncoder(writer).Encode(id)
+	if err != nil {
+		log.Println(err)
+		writer.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 	writer.WriteHeader(http.StatusCreated)
@@ -120,19 +129,11 @@ func (a bookAPI) deleteBook(writer http.ResponseWriter, request *http.Request) {
 		writer.WriteHeader(http.StatusBadRequest)
 		return
 	}
+	err = json.NewEncoder(writer).Encode(id)
+	if err != nil {
+		log.Println(err)
+		writer.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 	writer.WriteHeader(http.StatusCreated)
 }
-
-//ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-//bookId, err := primitive.ObjectIDFromHex(id)
-//if err != nil {
-//return book, err
-//}
-//cur, err := B.collection.Find(ctx, bson.M{"_id":bookId})
-//var bookBson  []bson.M
-//if err = cur.All(ctx, &bookBson); err != nil {
-//return book, err
-//}
-//if err != nil {
-//return book, err
-//}

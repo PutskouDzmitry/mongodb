@@ -113,6 +113,12 @@ func (B BookData) Delete(id string) error {
 	return nil
 }
 
+func (B BookData) ClearDb() {
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	B.collection.Drop(ctx)
+}
+
+
 //String output data in console
 func (B Book) String() string {
 	return fmt.Sprintln(B.BookId, B.AuthorId, B.PublisherId, strings.TrimSpace(B.NameOfBook), B.YearOfPublication, B.BookVolume, B.Number)
