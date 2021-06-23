@@ -20,7 +20,7 @@ up : image ## up docker compose
 
 .PHONY: integration
 integration: up
-	@go test --tags=integration ./cmd/server/cmd_test.go
+	@go test --tags=integration ./cmd/server/
 
 .PHONY: down
 down : integration
