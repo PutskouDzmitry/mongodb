@@ -78,7 +78,6 @@ func TestServerReadAllNotEqual(t *testing.T) {
 	require.NotEqual(expected, getMessage(command, "[{"))
 }
 
-
 func TestServerRead(t *testing.T) {
 	require := require.New(t)
 	command := "curl http://localhost:8081/book62c3503f9a9e8b7cdfa813d4"
@@ -97,7 +96,6 @@ func TestServerReadNotEqual(t *testing.T) {
 
 
 func TestServerUpdateTrue(t *testing.T){
-	require := require.New(t)
 	command := "curl -i -X PUT http://localhost:8081/books62c3503f9a9e8b7cdfa813d4/213"
 	cmd, _ := exec.
 		Command("/bin/sh", "-c", command).CombinedOutput()
@@ -105,7 +103,7 @@ func TestServerUpdateTrue(t *testing.T){
 	require.True(strings.Contains(actual, "200 OK"))
 }
 
-func TestServerUpdateContains(t *testing.T){
+func TestServerUpdateContains(t *testing.T) {
 	require := require.New(t)
 	command := "curl -i -X PUT http://localhost:8081/books62c3503f9a9e8b7cdfa813d4/213"
 	cmd, _ := exec.
@@ -115,6 +113,7 @@ func TestServerUpdateContains(t *testing.T){
 }
 
 func TestServerUpdateFalse(t *testing.T){
+
 	require := require.New(t)
 	command := "curl -i -X PUT http://localhost:8080/books64c3503f9a9e8b7cdfa813d4/213"
 	cmd, _ := exec.
@@ -122,6 +121,7 @@ func TestServerUpdateFalse(t *testing.T){
 	actual := string(cmd)
 	require.False(strings.Contains(actual, "200 OK"))
 }
+
 
 
 func TestServerDeleteFalse(t *testing.T){
@@ -132,6 +132,7 @@ func TestServerDeleteFalse(t *testing.T){
 	actual := string(cmd)
 	require.False(strings.Contains(actual, "200 OK"))
 }
+
 
 
 func TestServerDeleteTrue(t *testing.T){
