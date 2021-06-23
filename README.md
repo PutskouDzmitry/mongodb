@@ -20,3 +20,20 @@ Application for get books with such operations as in table below:
 ## Usage unit tests
 To run unit tests type:
 `go test ./...`
+
+
+1. Get api
+
+`minikube service -n todo-api --url todo-api`
+
+2. Get pods in namaspace
+
+`kubectl get pods --namespace todo-api`
+
+3. Apply app
+
+`kubectl apply --namespace todo-api -f todo-api.yaml`
+
+4. Describe app
+ 
+`kubectl describe pod todo-api-6f87588bb7-vtrdp --namespace=todo-api`

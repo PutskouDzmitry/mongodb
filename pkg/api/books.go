@@ -35,6 +35,7 @@ func (a bookAPI) getAllBooks(writer http.ResponseWriter, request *http.Request) 
 			log.Println(err)
 		}
 	}
+	logrus.Info(users)
 	err = json.NewEncoder(writer).Encode(users)
 	if err != nil {
 		log.Println(err)
@@ -55,6 +56,7 @@ func (a bookAPI) getOneBook(writer http.ResponseWriter, request *http.Request) {
 			return
 		}
 	}
+	logrus.Info(user)
 	if user.NameOfBook != "" {
 		err = json.NewEncoder(writer).Encode(user)
 		if err != nil {
@@ -79,14 +81,19 @@ func (a bookAPI) createBook(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 	err = a.data.Add(*book)
+	err = json.NewEncoder(writer).Encode(book.BookId)
+	if err != nil {
+		log.Println(err)
+		writer.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 	if err != nil {
 		log.Println("user hasn't been created")
 		writer.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	writer.WriteHeader(http.StatusCreated)
+	//writer.WriteHeader(http.StatusCreated)
 }
-
 func (a bookAPI) updateBook(writer http.ResponseWriter, request *http.Request) {
 	idRequest := mux.Vars(request)
 	id := idRequest["id"]
@@ -97,11 +104,16 @@ func (a bookAPI) updateBook(writer http.ResponseWriter, request *http.Request) {
 		writer.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	logrus.Info("Id ", id, " number ", number)
 	err = a.data.Update(id, number)
 	if err != nil {
 		log.Println("book hasn't been updated")
 		writer.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	err = json.NewEncoder(writer).Encode(id)
+	if err != nil {
+		log.Println(err)
+		writer.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 	writer.WriteHeader(http.StatusCreated)
@@ -110,26 +122,18 @@ func (a bookAPI) updateBook(writer http.ResponseWriter, request *http.Request) {
 func (a bookAPI) deleteBook(writer http.ResponseWriter, request *http.Request) {
 	idRequest := mux.Vars(request)
 	id := idRequest["id"]
-	log.Println(id)
 	err := a.data.Delete(id)
+	logrus.Println(id)
 	if err != nil {
-		log.Println("book hasn't been deleted")
+		log.Println("book hasn't been deleted(")
 		writer.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	err = json.NewEncoder(writer).Encode(id)
+	if err != nil {
+		log.Println(err)
+		writer.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 	writer.WriteHeader(http.StatusCreated)
 }
-
-//ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-//bookId, err := primitive.ObjectIDFromHex(id)
-//if err != nil {
-//return book, err
-//}
-//cur, err := B.collection.Find(ctx, bson.M{"_id":bookId})
-//var bookBson  []bson.M
-//if err = cur.All(ctx, &bookBson); err != nil {
-//return book, err
-//}
-//if err != nil {
-//return book, err
-//}
